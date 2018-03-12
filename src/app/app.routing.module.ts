@@ -2,6 +2,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './admin/components/dashboard/dashboard.component';
 import { loginComponent } from './admin/components/loginComponent/login.component';
+// import {AdminBlogsComponent} from './admin/components/admin-blogs/admin-blogs.component';
+// import { AdminCreateBlogComponent } from './admin/components/admin-create-blog/admin-create-blog.component';
+import { CategoriesComponent } from './admin/components/categories/categories.component';
 
 import { HomeComponent } from './components/home/home.component';
 import {AboutComponent} from './components/about/about.component';
@@ -40,7 +43,10 @@ export const appRoutes: Routes = [
         component: AdminLayoutComponent, 
         children: [
           { path: 'dashboard', component: DashboardComponent },
-          { path: 'login', component: loginComponent }
+          { path: 'login', component: loginComponent },
+          // { path: 'bloglist', component: AdminBlogsComponent },
+          // { path: 'addblog', component: AdminCreateBlogComponent },
+          { path: 'categories', component: CategoriesComponent }
         ]
     },
 

@@ -1,0 +1,83 @@
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 pad-btm-30 text-right">
+        <div class="card blog_submit_card">
+            <button type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target="#defaultModal" #categoryModalopen>Add New Category</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h5>
+                Categories
+                </h5>
+            </div>
+            
+            <div class="body">
+                <!-- Blog list table -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            
+                            <div class="body">
+                                <div class="table-responsive">
+                                    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let category of categories">
+                                                <td>{{ $index }}</td>
+                                                <td>{{ category.name }}</td>
+                                                <td>{{ category.description| slice:0:40 }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form [formGroup]="add_category_form">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="defaultModalLabel">Add New Category</h4>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Name</label>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" id="name" formControlName="name" class="form-control">
+                            
+                        </div>
+                    </div>
+                    <label class="form-label">Description</label>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" id="description" formControlName="description" class="form-control">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect" *ngIf="!updateFlag" (click)="addCategory()">Create</button>
+                    <button type="button" class="btn btn-primary waves-effect" *ngIf="updateFlag" (click)="updateCategory()">Update</button>
+                    <button type="button" class="btn btn-default waves-effect" (click)="setFlag()" data-dismiss="modal" #categoryModalclose>Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
