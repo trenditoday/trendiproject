@@ -5,7 +5,7 @@ export class GlobalconfigService {
 
   constructor() { }
 
-  baseApiUrl: string = 'http://localhost/projects/affiliate/src/api/';
+  baseApiUrl: string = 'http://localhost:8090/projects/affiliate/src/api/';
 
   //Flipkart Affiliate Configuration
 

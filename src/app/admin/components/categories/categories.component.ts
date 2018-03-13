@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Category } from '../../../models/category';
@@ -7,24 +7,22 @@ import { SlicePipe } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
-import { DataTablesModule } from 'angular-datatables';  
+import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
+
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit{
 
   @ViewChild('categoryModalclose') categoryModalclose: ElementRef;
   @ViewChild('categoryModalopen') categoryModalopen: ElementRef;
 
-  dtOptions: DataTables.Settings = {};
-  // We use this trigger because fetching the list of persons can be quite long,
-  // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject();
 
   // list of categories
   categories: Category[];
@@ -36,6 +34,8 @@ export class CategoriesComponent implements OnInit {
   add_category_form: FormGroup;
   updateFlag: boolean = false;
   category_id: any;
+  pagingLength:any;
+  contentArray:any;
 
   constructor(
   	private categoryService: CategoryService,
@@ -50,10 +50,6 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit() {
 
-  	this.dtOptions = {
-      pagingType: 'full_numbers',
-      "pageLength": 10
-    };
   	this.readCategory();
 
   }
@@ -68,8 +64,17 @@ export class CategoriesComponent implements OnInit {
         this.categoryService.readCategories()
             .subscribe(categories => {
               this.categories=categories['records'];
-              this.dtTrigger.next();
+              this.contentArray = this.categories;
+              this.returnedArray = this.categories.slice(0, 5);
         });
+
+        this.pagingLength = this.categories.length;
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    const startItem = (event.page - 1) * event.itemsPerPage;
+    const endItem = event.page * event.itemsPerPage;
+    this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 
   addCategory(){ 

@@ -9,6 +9,7 @@ import swal from 'sweetalert2';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { DatePipe } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';  
+import { PaginationModule } from 'ngx-bootstrap';
 
 // Components
 import { AppComponent } from './app.component';
@@ -68,7 +69,8 @@ import { CategoryService } from './services/category.service';
     RouterModule.forRoot(appRoutes),    
     ToastrModule.forRoot(),
     CKEditorModule,
-    DataTablesModule
+    DataTablesModule,
+    PaginationModule.forRoot()
   ],
   providers: [
     AuthServices, 

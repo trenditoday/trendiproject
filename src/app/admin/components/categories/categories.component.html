@@ -22,7 +22,7 @@
                             
                             <div class="body">
                                 <div class="table-responsive">
-                                    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                                    <table class="row-border hover">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -31,13 +31,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let category of categories">
+                                            <tr *ngFor="let category of returnedArray">
                                                 <td>{{ $index }}</td>
                                                 <td>{{ category.name }}</td>
                                                 <td>{{ category.description| slice:0:40 }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <pagination [totalItems]="contentArray.length" (pageChanged)="pageChanged($event)" [itemsPerPage]="5"></pagination>
                                 </div>
                             </div>
                         </div>
