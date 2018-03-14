@@ -37,6 +37,18 @@ h4 {
 .no-mar{
   margin: 0px !important;
 }
+
+.pad-top-30 {
+	padding-top: 30px;
+}
+.pad-tb-15 {
+	padding: 15px 0px;
+}
+
+.mar-tb-15 {
+	margin: 15px 0px;
+}
+
 .height-250 {
     height: 250px !important;
 }

@@ -11,7 +11,7 @@ import { Category } from '../models/category';
 // Service for categories data.
 export class CategoryService {
  	
- 	private apiURL = 'http://localhost:8090/projects/trendiproject/src/api/'; 
+ 	private apiURL = 'http://localhost/projects/trendiproject/src/api/'; 
 
     // We need Http to talk to a remote server.
     constructor(private _http: HttpClient) { }

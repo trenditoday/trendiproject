@@ -11,7 +11,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+//import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 @Component({
   selector: 'app-categories',
@@ -36,27 +36,40 @@ export class CategoriesComponent implements OnInit{
   category_id: any;
   pagingLength:any;
   contentArray:any;
+  returnedArray:any;
+
+  page: number = 1;
 
   constructor(
   	private categoryService: CategoryService,
     formBuilder: FormBuilder,
     private datePipe: DatePipe, 
     private router: Router) { 
+
+    this.page = 1;
   	this.add_category_form = new FormGroup({
+        'id': new FormControl({value: null, disabled:true}),
         'name': new FormControl('', Validators.required),
         'description': new FormControl('', Validators.required)
     });
   }
 
   ngOnInit() {
-
   	this.readCategory();
-
   }
 
-  setFlag() {
-  	this.updateFlag = false;
-  	this.add_category_form.reset();
+  submitCategory() {
+
+  	// this.updateFlag = false;
+  	// this.add_category_form.reset();
+
+    let id = this.add_category_form.get('id').value;
+    console.log(id);
+    if(id == null) {
+      this.addCategory();
+    } else {
+      this.updateCategory();
+    }
   }
 
   readCategory() {
@@ -64,17 +77,7 @@ export class CategoriesComponent implements OnInit{
         this.categoryService.readCategories()
             .subscribe(categories => {
               this.categories=categories['records'];
-              this.contentArray = this.categories;
-              this.returnedArray = this.categories.slice(0, 5);
         });
-
-        this.pagingLength = this.categories.length;
-  }
-
-  pageChanged(event: PageChangedEvent): void {
-    const startItem = (event.page - 1) * event.itemsPerPage;
-    const endItem = event.page * event.itemsPerPage;
-    this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 
   addCategory(){ 
@@ -100,17 +103,20 @@ export class CategoriesComponent implements OnInit{
              },
              error => console.log(error)
          );
+    this.add_category_form.reset();
     }
 
     openUpdateModal(cat, category_id) {
-    	this.updateFlag = true;
-    	
+   	  console.log("OpenModal"+category_id);
     	this.category_id = category_id;
     	this.categoryModalopen.nativeElement.click();
     	this.add_category_form.setValue({
+        id: this.category_id,
 		    name: cat.name,
 		    description: cat.description
 		});
+
+    this.add_category_form.reset();
     }
 
     updateCategory() {   	
@@ -125,12 +131,13 @@ export class CategoriesComponent implements OnInit{
                  category => {
                     // go back to list of products
                     this.readCategory();
-                    this.updateFlag = false;
                     this.add_category_form.reset();
                     this.categoryModalclose.nativeElement.click();
                  },
                  error => console.log(error)
              );
+
+       this.add_category_form.reset();
     }
 
     // user clicks 'yes' button

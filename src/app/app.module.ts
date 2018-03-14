@@ -8,8 +8,8 @@ import { ToastrModule } from 'ngx-toastr';
 import swal from 'sweetalert2';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { DatePipe } from '@angular/common';
-import { DataTablesModule } from 'angular-datatables';  
-import { PaginationModule } from 'ngx-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 // Components
 import { AppComponent } from './app.component';
@@ -38,6 +38,9 @@ import { AuthGuardService } from './services/authGuardService';
 import { GlobalconfigService } from './services/globalconfig.service';
 import { CategoryService } from './services/category.service';
 
+//Filters
+import { FilterPipe} from './pipes/filter.pipe';
+
 
 @NgModule({
   declarations: [
@@ -58,7 +61,8 @@ import { CategoryService } from './services/category.service';
     OfferComponent,
     // AdminBlogsComponent,
     // AdminCreateBlogComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'trendi-today' }),
@@ -69,8 +73,8 @@ import { CategoryService } from './services/category.service';
     RouterModule.forRoot(appRoutes),    
     ToastrModule.forRoot(),
     CKEditorModule,
-    DataTablesModule,
-    PaginationModule.forRoot()
+    NgbModule.forRoot(),
+    NgxPaginationModule
   ],
   providers: [
     AuthServices, 
