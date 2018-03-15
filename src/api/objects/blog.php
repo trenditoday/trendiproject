@@ -95,16 +95,14 @@ class Blog{
     function readOne(){
     
         // query to read single record
-        $query = "SELECT
-                    c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
+
+         $query = "SELECT
+                    b.id, b.title, b.content, b.status, b.category, b.tags, b.meta_keyword, b.meta_description, b.visits, b.created_date, b.modified_date, b.created_by
                 FROM
-                    " . $this->table_name . " p
-                    LEFT JOIN
-                        categories c
-                            ON p.category_id = c.id
+                    " . $this->table_name . " b
                 WHERE
-                    p.id = ?
-                LIMIT
+                    b.id = ?
+                    LIMIT
                     0,1";
     
         // prepare query statement
@@ -120,11 +118,17 @@ class Blog{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
         // set values to object properties
-        $this->name = $row['name'];
-        $this->price = $row['price'];
-        $this->description = $row['description'];
-        $this->category_id = $row['category_id'];
-        $this->category_name = $row['category_name'];
+        $this->title = $row['title'];
+        $this->content = $row['content'];
+        $this->status = $row['status'];
+        $this->category = $row['category'];
+        $this->tags = $row['tags'];
+        $this->meta_keyword = $row['meta_keyword'];
+        $this->meta_description = $row['meta_description'];
+        $this->visits = $row['visits'];
+        $this->created_date = $row['created_date'];
+        $this->modified_date = $row['modified_date'];
+        $this->created_by = $row['created_by'];
     }
 
     // update the product
@@ -134,28 +138,39 @@ class Blog{
         $query = "UPDATE
                     " . $this->table_name . "
                 SET
-                    name = :name,
-                    price = :price,
-                    description = :description,
-                    category_id = :category_id
+                    title=:title, content=:content, status=:status, category=:category, tags=:tags, meta_keyword=:meta_keyword, meta_description=:meta_description, visits=:visits, created_date=:created_date, modified_date=:modified_date, created_by=:created_by
                 WHERE
                     id = :id";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
-    
+
         // sanitize
-        $this->name=htmlspecialchars(strip_tags($this->name));
-        $this->price=htmlspecialchars(strip_tags($this->price));
-        $this->description=htmlspecialchars(strip_tags($this->description));
-        $this->category_id=htmlspecialchars(strip_tags($this->category_id));
+        $this->title=htmlspecialchars(strip_tags($this->title));
+        $this->content=htmlspecialchars(strip_tags($this->content));
+        $this->status=htmlspecialchars(strip_tags($this->status));
+        $this->category=htmlspecialchars(strip_tags($this->category));
+        $this->tags=htmlspecialchars(strip_tags($this->tags));
+        $this->meta_keyword=htmlspecialchars(strip_tags($this->meta_keyword));
+        $this->meta_description=htmlspecialchars(strip_tags($this->meta_description));
+        $this->visits=htmlspecialchars(strip_tags($this->visits));
+        $this->created_date=htmlspecialchars(strip_tags($this->created_date));
+        $this->modified_date=htmlspecialchars(strip_tags($this->modified_date));
+        $this->created_by=htmlspecialchars(strip_tags($this->created_by));
         $this->id=htmlspecialchars(strip_tags($this->id));
     
-        // bind new values
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':price', $this->price);
-        $stmt->bindParam(':description', $this->description);
-        $stmt->bindParam(':category_id', $this->category_id);
+        // bind values
+        $stmt->bindParam(":title", $this->title);
+        $stmt->bindParam(":content", $this->content);
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":category", $this->category);
+        $stmt->bindParam(":tags", $this->tags);
+        $stmt->bindParam(":meta_keyword", $this->meta_keyword);
+        $stmt->bindParam(":meta_description", $this->meta_description);
+        $stmt->bindParam(":visits", $this->visits);
+        $stmt->bindParam(":created_date", $this->created_date);
+        $stmt->bindParam(":modified_date", $this->modified_date);
+        $stmt->bindParam(":created_by", $this->created_by);
         $stmt->bindParam(':id', $this->id);
     
         // execute the query

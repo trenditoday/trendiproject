@@ -21,13 +21,5 @@ export class AppComponent {
 
   ngOnInit() {
 
-  this.dogs = this.state.get(DOGS_KEY, null as any);
-  
-    this.http
-      .get('https://dog.ceo/api/breeds/list/all')
-      .subscribe(data => {
-        this.dogs = data;
-          this.state.set(DOGS_KEY, data as any);
-      });
   }
 }

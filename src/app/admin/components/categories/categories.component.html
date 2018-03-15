@@ -30,8 +30,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let category of categories | paginate: { itemsPerPage: 10, currentPage: page }">
-
+                                        <tr *ngFor="let category of categories  | paginate: { itemsPerPage: 10, currentPage: page }">
                                             <td>{{ category.name }}</td>
                                             <td>{{ category.description| slice:0:40 }}</td>
                                             <td class="text-center">

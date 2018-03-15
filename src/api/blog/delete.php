@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // include database and object file
 include_once '../config/database.php';
-include_once '../objects/product.php';
+include_once '../objects/blog.php';
  
 // get database connection
 $database = new Database();
@@ -27,14 +27,14 @@ $blog->id = $data->id;
 // delete the product
 if($blog->delete()){
     echo '{';
-        echo '"message": "Product was deleted."';
+        echo '"message": "Blog was deleted."';
     echo '}';
 }
  
 // if unable to delete the product
 else{
     echo '{';
-        echo '"message": "Unable to delete object."';
+        echo '"message": "Unable to delete blog."';
     echo '}';
 }
 ?>

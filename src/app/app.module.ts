@@ -10,13 +10,14 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { DatePipe } from '@angular/common';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxEditorModule } from 'ngx-editor';
 
 // Components
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './admin/components/dashboard/dashboard.component';
 import { loginComponent } from './admin/components/loginComponent/login.component';
-// import {AdminBlogsComponent} from './admin/components/admin-blogs/admin-blogs.component';
-// import { AdminCreateBlogComponent } from './admin/components/admin-create-blog/admin-create-blog.component';
+import {AdminBlogsComponent} from './admin/components/admin-blogs/admin-blogs.component';
+import { AdminCreateBlogComponent } from './admin/components/admin-create-blog/admin-create-blog.component';
 import { CategoriesComponent } from './admin/components/categories/categories.component';
 
 import { HomeComponent } from './components/home/home.component';
@@ -37,6 +38,7 @@ import { AuthServices } from './services/authServices';
 import { AuthGuardService } from './services/authGuardService';
 import { GlobalconfigService } from './services/globalconfig.service';
 import { CategoryService } from './services/category.service';
+import { BlogService } from './services/blog.service';
 
 //Filters
 import { FilterPipe} from './pipes/filter.pipe';
@@ -59,8 +61,8 @@ import { FilterPipe} from './pipes/filter.pipe';
     DotdComponent,
     DotdFullComponent,
     OfferComponent,
-    // AdminBlogsComponent,
-    // AdminCreateBlogComponent,
+    AdminBlogsComponent,
+    AdminCreateBlogComponent,
     CategoriesComponent,
     FilterPipe
   ],
@@ -74,14 +76,16 @@ import { FilterPipe} from './pipes/filter.pipe';
     ToastrModule.forRoot(),
     CKEditorModule,
     NgbModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgxEditorModule
   ],
   providers: [
     AuthServices, 
     AuthGuardService, 
     GlobalconfigService,
     CategoryService,
-    DatePipe
+    DatePipe,
+    BlogService
     ],
   bootstrap: [AppComponent]
 })

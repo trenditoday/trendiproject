@@ -11,18 +11,18 @@ import { Blog } from '../models/blog';
 // Service for Blog data.
 export class BlogService {
  
- 	private apiURL = 'http://localhost/projects/affiliate/src/api/'; 
+ 	private apiURL = 'http://localhost/projects/trendiproject/src/api/'; 
 
     // We need Http to talk to a remote server.
     constructor(private http : HttpClient){ }
  
-    // Get list of products from remote server.
+    // Get list of blogs from remote server.
     readBlog(){
         return this.http
             .get(this.apiURL + "blog/read.php");
     }
 
-    // Send product data to remote server to create it.
+    // Send blog data to remote server to create it.
     createBlog(blog){
 
         const httpOptions = {
@@ -38,13 +38,13 @@ export class BlogService {
         );
     }
 
-    // Get a product details from remote server.
+    // Get a blog details from remote server.
     readOneBlog(blog_id){
         return this.http
             .get(this.apiURL + "blog/read_one.php?id="+blog_id);
     }
 
-    // Send product data to remote server to update it.
+    // Send blog data to remote server to update it.
     updateBlog(blog){
      
         const httpOptions = {
@@ -60,7 +60,7 @@ export class BlogService {
         );
     }
 
-    // Send product ID to remote server to delete it.
+    // Send blog ID to remote server to delete it.
     deleteBlog(blog_id){
      
         const httpOptions = {
