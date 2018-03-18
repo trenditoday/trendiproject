@@ -2,6 +2,7 @@
 	<div class="row clearfix">
 		<div class="col-lg-12 col-md-12 pad-btm-30 text-right">
 			<div class=" blog_submit_card">
+				<button type="button" class="btn btn-primary waves-effect" routerLink = "/blogs">Cancel</button>
 				<button type="button" class="btn btn-primary waves-effect" (click)="addBlog()">Submit</button>
 			</div>
 		</div>
@@ -31,7 +32,23 @@
 <!-- 										<ck-editor [config]="{extraPlugins: 'divarea'}" name="editor1" skin="moono-lisa" debounce="500" formControlName="content" #ckEditor="ckEditor"></ck-editor>
  -->									
 
-							<app-ngx-editor [placeholder]="'Enter text here...'" [height] = "400" [spellcheck]="true" formControlName ="content"></app-ngx-editor>
+							<!-- <app-ngx-editor [placeholder]="'Enter text here...'" [height] = "400" [spellcheck]="true" formControlName ="content"></app-ngx-editor> -->
+
+<!-- 							<ckeditor
+	formControlName ="content" 
+    
+    [readonly]="false"
+    (change)="onChange($event)"
+    (editorChange)="onEditorChange($event)"
+    (ready)="onReady($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+    (contentDom)="onContentDom($event)"
+    (fileUploadRequest)="onFileUploadRequest($event)"
+    debounce="500">
+  </ckeditor> -->
+
+  <tinymce formControlName="content" ></tinymce>
 							</div>
 								</div>
 							</div>
@@ -57,28 +74,23 @@
 							</div> -->
 
 							<div class="custom-control custom-radio">
-								  <input type="radio" id="customRadio1" name="statusRadio" class="custom-control-input" formControlName="status" checked="">
+								  <input type="radio" id="customRadio1" name="status" class="custom-control-input" formControlName="status" value="1">
 								  <label class="custom-control-label" for="customRadio1">Publish</label>
 								</div>
 								<div class="custom-control custom-radio">
-								  <input type="radio" id="customRadio2" name="statusRadio" class="custom-control-input" formControlName="status">
+								  <input type="radio" id="customRadio2" name="status" class="custom-control-input" formControlName="status" value="0">
 								  <label class="custom-control-label" for="customRadio2">Unpublish</label>
 								</div>
-														</div>
+							</div>
 					</div>
 					<div class="row clearfix">
 						<div class="col-sm-12">
-							Page Visits:
+							Created On: {{this.blogItem?.created_date}}
 						</div>
 					</div>
 					<div class="row clearfix">
 						<div class="col-sm-12">
-							Created On:
-						</div>
-					</div>
-					<div class="row clearfix">
-						<div class="col-sm-12">
-							Last Modified:
+							Last Modified: {{this.blogItem?.modified_date}}
 						</div>
 					</div>
 				</div>
@@ -89,24 +101,33 @@
 					Categories
 					</h5>
 				</div>
-				<div class="body category_wrap">
+				<div class="body">
 					<div class="row clearfix">
 						<div class="col-sm-12">
 							<div class="form-group">
 								<div class="form-group">
-							      <div class="form-check" *ngFor="let category of categories">
+
+									<angular2-multiselect [data]="itemList" 
+                      formControlName="selectedItems" 
+                      [settings]="settings" 
+                      (onSelect)="onItemSelect($event)"
+                      (onDeSelect)="OnItemDeSelect($event)" 
+                      (onSelectAll)="onSelectAll($event)" 
+                      (onDeSelectAll)="onDeSelectAll($event)">
+</angular2-multiselect>
+							  <!--     <div class="form-check" *ngFor="let category of categories">
 							          <input
 							            class="form-check-input filled-in"
 							            type="checkbox"
 							            id="category{{category.id}}"
 							            formControlName="category"
-							            [checked]="category.checked">							          
+							            [checked]="category.checked" (change)="populateCheckbox(category, $event)">							          
 							        <label for="category{{category.id}}">{{category.name}}</label> 
-							      </div>
-							   </div>
-								<!-- <input type="checkbox" id="basic_checkbox_2" formControlName="category" class="filled-in" checked="true"><label for="basic_checkbox_2">Uncategorized</label> -->
 
-								<!-- <div id='treeparent'><ej-treeview id='treeelement' [fields]='field' [showCheckBox]='showCheckBox'></ej-treeview></div> -->
+
+							      </div> -->
+							   </div>
+	
 							</div>
 						</div>
 					</div>
@@ -141,9 +162,25 @@
 					<div class="form-group demo-tagsinput-area">
 						<label>Tags</label>
 						<div class="form-line">
-							<input type="text" class="form-control" data-role="tagsinput" value="Amsterdam,Washington,Sydney,Beijing,Cairo" formControlName="tags">
+							<!-- <input type="text" class="form-control" data-role="tagsinput" value="Amsterdam,Washington,Sydney,Beijing,Cairo" formControlName="tags"> -->
+							<mat-form-field class="mat_blog_tag">
+					  <mat-chip-list #chipList>
+					    <mat-chip *ngFor="let tag of blogTags" [selectable]="selectable"
+					             [removable]="removable" (remove)="removeTag(tag)">
+					      {{tag}}
+					      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+					    </mat-chip>
+					    <input placeholder="" 
+					           [matChipInputFor]="chipList"
+					           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+					           [matChipInputAddOnBlur]="addOnBlur"
+					           (matChipInputTokenEnd)="addTag($event)" />
+					  </mat-chip-list>
+					</mat-form-field>
 						</div>
 					</div>
+
+					
 				</div>
 			</div>
 		</div>

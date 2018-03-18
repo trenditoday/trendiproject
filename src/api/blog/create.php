@@ -19,13 +19,15 @@ $blog = new Blog($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
- 
+
+$tagarray =json_decode(json_encode($data->tags), True);
+
 // set product property values
 $blog->title = $data->title;
 $blog->content = $data->content;
 $blog->status = $data->status;
 $blog->category = $data->category;
-$blog->tags = $data->tags;
+$blog->tags = implode(',', $tagarray);
 $blog->meta_keyword = $data->meta_keyword;
 $blog->meta_description = $data->meta_description;
 $blog->visits = $data->visits;

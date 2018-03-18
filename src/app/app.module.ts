@@ -1,4 +1,5 @@
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -11,6 +12,8 @@ import { DatePipe } from '@angular/common';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { NgxEditorModule } from 'ngx-editor';
+import { NgxTinymceModule } from 'ngx-tinymce';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 // Components
 import { AppComponent } from './app.component';
@@ -43,6 +46,10 @@ import { BlogService } from './services/blog.service';
 //Filters
 import { FilterPipe} from './pipes/filter.pipe';
 
+//Angular Material
+
+import {MaterialModule} from './app.material.module';
+
 
 @NgModule({
   declarations: [
@@ -68,6 +75,8 @@ import { FilterPipe} from './pipes/filter.pipe';
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'trendi-today' }),
+    BrowserAnimationsModule,
+    MaterialModule,
     HttpClientModule,
     BrowserTransferStateModule,
     FormsModule,
@@ -77,7 +86,14 @@ import { FilterPipe} from './pipes/filter.pipe';
     CKEditorModule,
     NgbModule.forRoot(),
     NgxPaginationModule,
-    NgxEditorModule
+    NgxEditorModule,
+    NgxTinymceModule.forRoot({
+          //baseURL: './assets/tinymce/',
+          // or cdn
+          baseURL: '//cdn.bootcss.com/tinymce/4.7.4/'
+      }),
+    AngularMultiSelectModule
+
   ],
   providers: [
     AuthServices, 

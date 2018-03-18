@@ -58,10 +58,10 @@ class Blog{
     
         // sanitize
         $this->title=htmlspecialchars(strip_tags($this->title));
-        $this->content=htmlspecialchars(strip_tags($this->content));
+        $this->content=$this->content;
         $this->status=htmlspecialchars(strip_tags($this->status));
         $this->category=htmlspecialchars(strip_tags($this->category));
-        $this->tags=htmlspecialchars(strip_tags($this->tags));
+        $this->tags=$this->tags;
         $this->meta_keyword=htmlspecialchars(strip_tags($this->meta_keyword));
         $this->meta_description=htmlspecialchars(strip_tags($this->meta_description));
         $this->visits=htmlspecialchars(strip_tags($this->visits));
@@ -147,7 +147,7 @@ class Blog{
 
         // sanitize
         $this->title=htmlspecialchars(strip_tags($this->title));
-        $this->content=htmlspecialchars(strip_tags($this->content));
+        $this->content=$this->content;
         $this->status=htmlspecialchars(strip_tags($this->status));
         $this->category=htmlspecialchars(strip_tags($this->category));
         $this->tags=htmlspecialchars(strip_tags($this->tags));

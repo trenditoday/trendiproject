@@ -30,7 +30,7 @@ export class BlogService {
             'Content-Type':  'application/json'
           })
          }
-     
+         console.log(blog);
         return this.http.post(
             this.apiURL + "blog/create.php",
             blog,

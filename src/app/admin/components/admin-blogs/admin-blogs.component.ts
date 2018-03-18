@@ -5,6 +5,7 @@ import { Blog } from '../../../models/blog';
 import { SlicePipe } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import swal from 'sweetalert2';
  
 @Component({
   selector: 'app-admin-blogs',
@@ -45,6 +46,15 @@ export class AdminBlogsComponent implements OnInit {
  
  deleteBlog(blog_id){ 
 
+   swal({
+        title: 'Are you sure to delete?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.value) {
+
     this.blogService.deleteBlog(blog_id)
         .subscribe(
              blog => {
@@ -55,7 +65,13 @@ export class AdminBlogsComponent implements OnInit {
              },
              error => console.log(error)
          );
-    }
- 
    
+ 
+       } else if (result.dismiss === swal.DismissReason.cancel) {
+          swal(
+            'Cancelled'
+          )
+        }
+      });
+       }
 }
