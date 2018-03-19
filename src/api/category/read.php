@@ -36,7 +36,7 @@ if($num>0){
  
         $category_item=array(
             "id" => $id,
-            "name" => $name,
+            "itemName" => $name,
             "description" => html_entity_decode($description)
         );
  

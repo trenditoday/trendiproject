@@ -20,13 +20,16 @@ $blog = new Blog($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 
-$tagarray =json_decode(json_encode($data->tags), True);
+$tagarray = json_decode(json_encode($data->tags), True);
+
+$catarray = json_decode(json_encode($data->selectedItems), True);
+$map_catarray = array_map('current', $catarray);
 
 // set product property values
 $blog->title = $data->title;
 $blog->content = $data->content;
 $blog->status = $data->status;
-$blog->category = $data->category;
+$blog->category = implode(',', $map_catarray);
 $blog->tags = implode(',', $tagarray);
 $blog->meta_keyword = $data->meta_keyword;
 $blog->meta_description = $data->meta_description;

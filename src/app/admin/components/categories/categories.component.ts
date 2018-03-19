@@ -60,17 +60,13 @@ export class CategoriesComponent implements OnInit{
 
   submitCategory() {
 
-  	// this.updateFlag = false;
-  	// this.add_category_form.reset();
-
     let id = this.add_category_form.get('id').value;
-    console.log(id);
     if(id == null) {
       this.addCategory();
     } else {
       this.updateCategory();
     }
-  }
+  };
 
   readCategory() {
   	// read categories from database
@@ -123,7 +119,6 @@ export class CategoriesComponent implements OnInit{
     	
        // add product_id in the object so it can be updated
        this.add_category_form.value.id = this.category_id;
-       console.log(this.add_category_form.value);
 
 		// send data to server
         this.categoryService.updateCategory(this.add_category_form.value)

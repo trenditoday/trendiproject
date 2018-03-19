@@ -1,9 +1,9 @@
-<form [formGroup]="add_blog_form" (ngSubmit)="addBlog()">
+<form [formGroup]="add_blog_form">
 	<div class="row clearfix">
 		<div class="col-lg-12 col-md-12 pad-btm-30 text-right">
 			<div class=" blog_submit_card">
 				<button type="button" class="btn btn-primary waves-effect" routerLink = "/blogs">Cancel</button>
-				<button type="button" class="btn btn-primary waves-effect" (click)="addBlog()">Submit</button>
+				<button type="button" class="btn btn-primary waves-effect" (click)="submitBlog()">Submit</button>
 			</div>
 		</div>
 	</div>
@@ -20,6 +20,7 @@
 						<div class="col-sm-12">
 							<div class="form-group form-float">
 								<div class="form-line">
+									<input type="hidden" name="id" formControlName="id">
 									<label class="form-label">Title</label>
 									<input type="text" class="form-control" placeholder="" formControlName="title">
 									
@@ -107,7 +108,8 @@
 							<div class="form-group">
 								<div class="form-group">
 
-									<angular2-multiselect [data]="itemList" 
+									<angular2-multiselect *ngIf="categories" [data]="categories" 
+									[(ngModel)]="itemList" 
                       formControlName="selectedItems" 
                       [settings]="settings" 
                       (onSelect)="onItemSelect($event)"

@@ -29,7 +29,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let blog of blogs | paginate: { itemsPerPage: 10, currentPage: page }">
+							<tr *ngFor="let blog of blogs | filter : searchText | paginate: { itemsPerPage: 10, currentPage: page }">
 								<td>{{blog.title | slice:0:40}}...</td>
 								<!-- <td>{{blog.category}}</td> -->
 								<td>{{blog.created_date | date: 'dd-MM-yyyy'}}</td>

@@ -10,6 +10,7 @@ import { Category } from '../../../models/category';
 import 'rxjs/Rx';
 import {MatChipInputEvent} from '@angular/material';
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-create-blog',
@@ -46,10 +47,10 @@ export class AdminCreateBlogComponent implements OnInit {
 
   ckeditorContent: string = '<p>Some html</p>';
   itemList = [];
-    selectedItems = [];
-    settings = {};
+  selectedItems = [];
+  settings = {};
 
-  constructor(private blogService: BlogService, private categoryService: CategoryService, formBuilder: FormBuilder, private datePipe: DatePipe, private router: Router, private actRoute: ActivatedRoute) {
+  constructor(private blogService: BlogService, private categoryService: CategoryService, formBuilder: FormBuilder, private datePipe: DatePipe, private router: Router, private actRoute: ActivatedRoute, private toastr: ToastrService) {
 
     this.editorConfig = {
     "editable": true,
@@ -74,7 +75,14 @@ export class AdminCreateBlogComponent implements OnInit {
     ]
 }
 
+// read categories from database
+    this.categoryService.readCategories()
+        .subscribe(categories => {
+          this.categories=categories['records'];
+    });
+
 	this.add_blog_form = new FormGroup({
+        'id': new FormControl({value: null, disabled:true}),
         'title': new FormControl('', Validators.required),
         'content': new FormControl('', Validators.required),
         'status':new FormControl('1', Validators.required),
@@ -88,33 +96,12 @@ export class AdminCreateBlogComponent implements OnInit {
 
   ngOnInit() {
 
-    this.itemList = [
-            { "id": 1, "itemName": "India" },
-            { "id": 2, "itemName": "Singapore" },
-            { "id": 3, "itemName": "Australia" },
-            { "id": 4, "itemName": "Canada" },
-            { "id": 5, "itemName": "South Korea" },
-            { "id": 6, "itemName": "Brazil" }
-        ];
-
-        this.selectedItems = [
-            { "id": 1, "itemName": "India" },
-            { "id": 2, "itemName": "Singapore" }];
         this.settings = {
-            text: "Select Countries",
+            text: "Select Category",
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
             classes: "myclass custom-class"
-        };
-
-
-
-
-    // read categories from database
-    this.categoryService.readCategories()
-        .subscribe(categories => {
-          this.categories=categories['records'];
-    });
+        };    
 
     // Get blog id to edit / update
     this.blogID = this.actRoute.snapshot.params['id'];
@@ -125,8 +112,19 @@ export class AdminCreateBlogComponent implements OnInit {
         .subscribe(response => {
 
         this.blogItem = response;
+
+        for(let cat of this.blogItem.category) {
+         let filterCat = this.categories.find(item => item.id === cat);
+         this.itemList.push(filterCat);
+        }
+
+        // this.itemList = [
+        //   { id: "59", itemName: "Admin", description: "Amin desc" },​
+        //   { id: "61", itemName: "Furniture", description: "Furniture Description" }
+        // ];
           
         this.add_blog_form.patchValue({
+          id: this.blogItem.id,
           title: this.blogItem.title,
           content: this.blogItem.content,
           status:this.blogItem.status,
@@ -167,19 +165,35 @@ export class AdminCreateBlogComponent implements OnInit {
   };
 
   onItemSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
+    //console.log(item);
+    this.selectedItems.push(item);
+    //console.log(this.selectedItems);
     }
     OnItemDeSelect(item: any) {
-        console.log(item);
-        console.log(this.selectedItems);
+        //console.log(item);
+        let index = this.selectedItems.indexOf(item);
+
+        if (index >= 0) {
+          this.selectedItems.splice(index, 1);
+        }
+        //console.log(this.selectedItems);
     }
     onSelectAll(items: any) {
-        console.log(items);
+        //console.log(items);
     }
     onDeSelectAll(items: any) {
-        console.log(items);
+        //console.log(items);
     }
+
+  submitBlog() {
+
+    let id = this.add_blog_form.get('id').value;
+    if(id == null) {
+      this.addBlog();
+    } else {
+      this.updateBlog();
+    }
+  };
 
   addBlog(){ 
 
@@ -203,13 +217,51 @@ export class AdminCreateBlogComponent implements OnInit {
     this.blogService.createBlog(dataToAPI)
         .subscribe(
              blog => {
-                // show an alert to tell the user if product was created or not
+                // show an alert to tell the user if blog was created or not
                 console.log(blog);
                 this.router.navigate(['/blogs']);
+                this.toastr.success('Blog Created', 'Success', {
+                  timeOut: 3000,
+                  positionClass: "toast-top-center"
+                });
              },
              error => console.log(error)
          );
     }
 
+    updateBlog(){ 
+
+    this.mdate = this.datePipe.transform(this.current_date,"yyyy-MM-dd"); 
+    // send data to server
+    let dataToAPI = {
+      id: this.add_blog_form.get('id').value,
+      title: this.add_blog_form.get('title').value,
+      content:this.add_blog_form.get('content').value,
+      status:this.add_blog_form.get('status').value,
+      selectedItems:this.itemList,
+      tags:this.blogTags,
+      meta_keyword:this.add_blog_form.get('meta_keyword').value,
+      meta_description:this.add_blog_form.get('meta_description').value,
+      visits:"0",
+      created_date: this.blogItem.created_date,
+      modified_date: this.mdate,
+      created_by: 'admin'
+    };
+
+    console.log(dataToAPI);
+
+    this.blogService.updateBlog(dataToAPI)
+        .subscribe(
+             blog => {
+                // show an alert to tell the user if blog was updated or not
+                console.log(blog);
+                this.router.navigate(['/blogs']);
+                this.toastr.success('Blog updated', 'Success', {
+                  timeOut: 3000,
+                });
+             },
+             error => console.log(error)
+         );
+    }
     
 }

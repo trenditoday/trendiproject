@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/product.php';
+include_once '../objects/blog.php';
  
 // get database connection
 $database = new Database();
@@ -23,23 +23,35 @@ $data = json_decode(file_get_contents("php://input"));
 // set ID property of product to be edited
 $blog->id = $data->id;
  
+$tagarray = json_decode(json_encode($data->tags), True);
+
+$catarray = json_decode(json_encode($data->selectedItems), True);
+$map_catarray = array_map('current', $catarray);
+
 // set product property values
-$blog->name = $data->name;
-$blog->price = $data->price;
-$blog->description = $data->description;
-$blog->category_id = $data->category_id;
+$blog->title = $data->title;
+$blog->content = $data->content;
+$blog->status = $data->status;
+$blog->category = implode(',', $map_catarray);
+$blog->tags = implode(',', $tagarray);
+$blog->meta_keyword = $data->meta_keyword;
+$blog->meta_description = $data->meta_description;
+$blog->visits = $data->visits;
+$blog->created_date = $data->created_date;
+$blog->modified_date = $data->modified_date;
+$blog->created_by = $data->created_by;
  
 // update the product
 if($blog->update()){
     echo '{';
-        echo '"message": "Product was updated."';
+        echo '"message": "Blog was updated."';
     echo '}';
 }
  
 // if unable to update the product, tell the user
 else{
     echo '{';
-        echo '"message": "Unable to update product."';
+        echo '"message": "Unable to update blog."';
     echo '}';
 }
 ?>
